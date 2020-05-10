@@ -1,0 +1,37 @@
+// Defines color
+$mainColor: #121212;
+$subColor: #898989;
+$accentColor: #dc3d3a;
+$supportColor: #eaeaea;
+$backGroundColor: #ccc;
+$calendarColor: #b2cf3e;
+
+// Defines font
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
+
+@mixin enfont() {
+  -webkit-font-smoothing: antialiased;
+  font-family: 'Comfortaa', cursive;
+}
+@mixin font() {
+  -webkit-font-smoothing: antialiased;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+// Defines link
+@mixin link() {
+  &:hover {
+    position: relative;
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: $accentColor;
+    }
+  }
+}
