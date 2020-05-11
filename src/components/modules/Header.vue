@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <div class="header__inner">
-      <div class="header__menu">
+      <div class="header__button">
         <span></span>
         <span></span>
         <span></span>
@@ -48,7 +48,7 @@ export default class Header extends Vue {
     fill: $mainColor;
   }
 }
-.header__menu {
+.header__button {
   display: flex;
   flex-direction: column;
   justify-content: space-around;

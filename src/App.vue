@@ -1,25 +1,30 @@
 <template>
-  <div id="app">
-    <Header />
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+  <div id="app" class="container">
+    <Sidebar />
+    <div class="main">
+      <Header />
+      <div id="nav">
+        <router-link to="/">Home</router-link> |
+        <router-link to="/about">About</router-link>
+      </div>
+      <div>
+        <p>{{ number }}</p>
+        <button @click="increment">+</button>
+      </div>
+      <router-view/>
     </div>
-    <div>
-      <p>{{ number }}</p>
-      <button @click="increment">+</button>
-    </div>
-    <router-view/>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Header from '@/components/modules/Header.vue';
+import Sidebar from '@/components/modules/Sidebar.vue';
 
 @Component({ // VueがClassを認識するためのアノテーション
   components: {
-    Header
+    Header,
+    Sidebar
   },
 })
 
@@ -64,6 +69,17 @@ a {
 li {
   list-style: none;
 }
+.container {
+  display: flex;
+  height: calc(100vh - 50px);
+}
+.main {
+  width: calc(100% - 260px);
+}
+
+
+
+
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
