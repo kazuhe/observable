@@ -1,10 +1,13 @@
 <template>
   <div id="app" class="container">
-    <Sidebar />
+    <Sidebar @munishi="muni" />
+    {{ sidebarMinimum }}
+    {{ greetText }}
     <div class="main">
       <Header />
       <div id="nav">
         <router-link to="/">Home</router-link> |
+        <router-link to="/task">Task</router-link> |
         <router-link to="/about">About</router-link>
       </div>
       <div>
@@ -28,11 +31,17 @@ import Sidebar from '@/components/modules/Sidebar.vue';
   },
 })
 
-export default class Home extends Vue { // Vueクラスを継承
+export default class App extends Vue { // Vueクラスを継承
   number = 5;
+  public sidebarMinimum = 'false'; // サイドバー最小化の状態管理
 
   increment () {
     return this.number += 1;
+  }
+
+  public muni(value: string) {
+    console.log(value);
+    this.sidebarMinimum = value;
   }
 }
 </script>
@@ -71,7 +80,8 @@ li {
 }
 .container {
   display: flex;
-  height: calc(100vh - 50px);
+  height: 100vh;
+  overflow: hidden;
 }
 .main {
   width: calc(100% - 260px);

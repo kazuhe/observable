@@ -1,18 +1,22 @@
 <template>
   <div class="home">
-    <Task />
+    <Button />
+    <Project greet="Hello!" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import Button from '@/components/modules/Button.vue';
+import Project from '@/components/modules/Project.vue'; 
 
 @Component({ // VueがClassを認識するためのアノテーション
   components: {
-
+    Button,
+    Project
   },
 })
-export default class Home extends Vue { // Vueクラスを継承
+export default class Task extends Vue { // Vueクラスを継承
   data () {
     return {
 
