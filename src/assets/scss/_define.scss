@@ -1,9 +1,8 @@
 // Defines color
-$mainColor: #121212;
-$subColor: #898989;
-$accentColor: #dc3d3a;
-$supportColor: #eaeaea;
-
+$mainColor: #2e4ad4;
+$subColor: #838fa0;
+$textColor :#48465b;
+$thintColor: #f3f8ff;
 $deepColor: #273444;
 
 
@@ -11,15 +10,6 @@ $deepColor: #273444;
 // Defines font
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
-
-@mixin enfont() {
-  -webkit-font-smoothing: antialiased;
-  font-family: 'Comfortaa', cursive;
-}
-@mixin font() {
-  -webkit-font-smoothing: antialiased;
-  font-family: 'Noto Sans JP', sans-serif;
-}
 
 // Defines link
 @mixin link() {

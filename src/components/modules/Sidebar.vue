@@ -1,22 +1,26 @@
 <template>
   <div :class="minimize" class="sidebar">
     <div class="sidebar__brand">
-      <div class="sidebar__brand-logo">
+      <div class="sidebar__brand_logo">
         <Logo />
       </div>
-      <!-- <div @click="muni" class="sidebar__brand-button"> -->
-      <div @click="sidebarMinimize = !sidebarMinimize" class="sidebar__brand-button">
+      <!-- <div @click="muni" class="sidebar__brand_button"> -->
+      <div @click="sidebarMinimize = !sidebarMinimize" class="sidebar__brand_button">
         <span></span>
         <span></span>
         <span></span>
       </div>
     </div>
-    <div class="l-sidebar__inner">
-      <div class="sidebar__unit">
-        {{ greet }}
-      </div>
-      <div class="sidebar__unit">
-        
+    <ul class="sidebar_navi">
+      <router-link tag="li" to="/"><a>Home</a></router-link>
+      <router-link tag="li" to="/task"><a>Task</a></router-link>
+      <router-link tag="li" to="/about"><a>About</a></router-link>
+      <router-link tag="li" to="/wiki/1"><a>Wiki</a></router-link>
+    </ul>
+    <div class="sidebar_unit">
+      <div class="sidebar_unit_title">Project</div>
+      <div class="sidebar_unit_inner">
+        <Project greet="Hello!" />
       </div>
     </div>
   </div>
@@ -24,10 +28,12 @@
 
 <script lang="ts">
 import { Component, Emit, Vue } from 'vue-property-decorator';
+import Project from '@/components/modules/Project.vue'; 
 import Logo from '@/components/svg/Logo.vue'; 
 
 @Component({
   components: {
+    Project,
     Logo
   }
 })
@@ -50,11 +56,11 @@ export default class Sidebar extends Vue {
 <style lang="scss">
 .sidebar {
   background-color: $deepColor;
-  width: 260px;
-  transition: width .3s;
+  min-width: 260px;
+  transition: min-width .3s;
   &.--minimize { // サイドバー最小化時
-    width: 60px;
-    .sidebar__brand-logo {
+    min-width: 60px;
+    .sidebar__brand_logo {
       display: none;
     }
   }
@@ -67,21 +73,21 @@ export default class Sidebar extends Vue {
   height: 60px;
   padding: 0 15px;
 }
-.sidebar__brand-logo {
+.sidebar__brand_logo {
   > svg {
     display: block;
     width: 150px;
     fill: #fff;
   }
 }
-.sidebar__brand-button {
+.sidebar__brand_button {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   width: 30px;
   height: 30px;
   padding: 9px;
-  border: 1px solid $supportColor;
+  border: 1px solid $thintColor;
   background-color: #fff;
   border-radius: 50px;
   cursor: pointer;
@@ -94,29 +100,29 @@ export default class Sidebar extends Vue {
     background-color: $deepColor;
   }
 }
-
-.l-sidebar__inner {
-  padding: 30px;
-  height: 100%;
-}
-.sidebar__unit {
-  margin-bottom: 30px;
-  color: #fff;
-  &:last-child {
-    margin-bottom: 0;
+.sidebar_navi {
+  li {
+    padding: 10px 15px 10px 30px;
+    a {
+      display: block;
+      font-weight: 600;
+      color: $subColor;
+    }
+  }
+  .router-link-exact-active { // メニューactive時
+    background-color: darken($deepColor, 5%);
+    a {
+      color: #fff;
+    }
   }
 }
-
-.l-sidebar__unitName {
-  @include enfont();
-  font-size: 1.7rem;
-  font-weight: 700;
-  svg {
-    width: 17px;
-    padding-right: 5px;
-  }
-  path {
-    fill: $accentColor;
-  }
+.sidebar_unit {
+  margin-top: 30px;
+}
+.sidebar_unit_title {
+  display: block;
+  padding: 10px 15px 10px 30px;
+  font-weight: 600;
+  color: $subColor;
 }
 </style>

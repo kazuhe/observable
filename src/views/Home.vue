@@ -20,3 +20,9 @@ export default class Home extends Vue { // Vueクラスを継承
   }
 }
 </script>
+
+<style lang="scss">
+.home {
+  padding: 0 30px;
+}
+</style>

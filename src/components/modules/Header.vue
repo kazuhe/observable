@@ -24,7 +24,7 @@ export default class Header extends Vue {
 <style lang="scss">
 .header {
   background: #fff;
-  border-bottom: 1px solid $supportColor;
+  box-shadow: 0px 0px 40px 0px rgba($deepColor, 0.1);
   padding: 0 30px;
 }
 .header__inner {

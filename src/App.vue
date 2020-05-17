@@ -1,20 +1,13 @@
 <template>
   <div id="app" class="container">
     <Sidebar @munishi="muni" />
-    {{ sidebarMinimum }}
-    {{ greetText }}
     <div class="main">
       <Header />
-      <div id="nav">
-        <router-link to="/">Home</router-link> |
-        <router-link to="/task">Task</router-link> |
-        <router-link to="/about">About</router-link>
-      </div>
       <div>
         <p>{{ number }}</p>
         <button @click="increment">+</button>
       </div>
-      <router-view/>
+      <router-view /> <!-- URLで判断されたrouterの中身を動的に表示 -->
     </div>
   </div>
 </template>
@@ -64,15 +57,16 @@ html {
   font-size: 10px;
 }
 body {
+  overflow: hidden;
   font-family: 'Comfortaa', 'Noto Sans JP', sans-serif;
   font-size: 1.4rem;
-  color: $mainColor;
+  color: $textColor;
   font-weight: 400;
   line-height: 1.6;
-  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 a {
-  color: $mainColor;
+  color: $textColor;
   text-decoration: none;
 }
 li {
@@ -84,31 +78,7 @@ li {
   overflow: hidden;
 }
 .main {
-  width: calc(100% - 260px);
-}
-
-
-
-
-
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+  width: 100%;
+  background-color: $thintColor;
 }
 </style>
