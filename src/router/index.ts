@@ -19,9 +19,9 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Task.vue')
   },
   {
-    path: '/about',
-    name: 'About',
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/calendar',
+    name: 'Calendar',
+    component: () => import(/* webpackChunkName: "calendar" */ '../views/Calendar.vue')
   },
   {
     path: '/wiki/:id',

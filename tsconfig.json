@@ -4,12 +4,13 @@
     "module": "esnext",
     "strict": true,
     "jsx": "preserve",
+    "removeComments": true, // コンパイル時にコメント削除
     "importHelpers": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
+    "sourceMap": true, // ソースマップを生成
     "baseUrl": ".",
     "types": [
       "webpack-env"

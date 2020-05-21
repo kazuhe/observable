@@ -14,7 +14,7 @@
     <ul class="sidebar_navi">
       <router-link tag="li" to="/"><a>Home</a></router-link>
       <router-link tag="li" to="/task"><a>Task</a></router-link>
-      <router-link tag="li" to="/about"><a>About</a></router-link>
+      <router-link tag="li" to="/calendar"><a>Calendar</a></router-link>
       <router-link tag="li" to="/wiki/1"><a>Wiki</a></router-link>
     </ul>
     <div class="sidebar_unit">
@@ -57,9 +57,10 @@ export default class Sidebar extends Vue {
 .sidebar {
   background-color: $deepColor;
   min-width: 260px;
-  transition: min-width .3s;
+  transition: all .3s;
   &.--minimize { // サイドバー最小化時
     min-width: 60px;
+    width: 60px;
     .sidebar__brand_logo {
       display: none;
     }
@@ -87,7 +88,7 @@ export default class Sidebar extends Vue {
   width: 30px;
   height: 30px;
   padding: 9px;
-  border: 1px solid $thintColor;
+  border: 1px solid $thinColor;
   background-color: #fff;
   border-radius: 50px;
   cursor: pointer;

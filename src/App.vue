@@ -3,11 +3,11 @@
     <Sidebar @munishi="muni" />
     <div class="main">
       <Header />
-      <div>
+      <div class="main_inner">
         <p>{{ number }}</p>
         <button @click="increment">+</button>
+        <router-view /> <!-- URLで判断されたrouterの中身を動的に表示 -->
       </div>
-      <router-view /> <!-- URLで判断されたrouterの中身を動的に表示 -->
     </div>
   </div>
 </template>
@@ -75,10 +75,19 @@ li {
 .container {
   display: flex;
   height: 100vh;
-  overflow: hidden;
 }
 .main {
   width: 100%;
-  background-color: $thintColor;
+  background-color: $thinColor;
+}
+.main_inner {
+  padding: 0 30px;
+}
+
+// unit Compornets
+.unit {
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
 }
 </style>

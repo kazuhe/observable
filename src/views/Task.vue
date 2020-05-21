@@ -1,7 +1,9 @@
 <template>
   <div class="home">
     <Button />
-    <Project greet="Hello!" />
+    <div class="unit">
+      <Project greet="Hello!" />
+    </div>
   </div>
 </template>
 
