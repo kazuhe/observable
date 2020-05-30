@@ -57,7 +57,6 @@ html {
   font-size: 10px;
 }
 body {
-  overflow: hidden;
   font-family: 'Comfortaa', 'Noto Sans JP', sans-serif;
   font-size: 1.4rem;
   color: $textColor;
@@ -78,6 +77,7 @@ li {
 }
 .main {
   width: 100%;
+  padding-left: 260px;
   background-color: $thinColor;
 }
 .main_inner {

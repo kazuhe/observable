@@ -55,8 +55,13 @@ export default class Sidebar extends Vue {
 
 <style lang="scss">
 .sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
   background-color: $deepColor;
   min-width: 260px;
+  width: 260px;
   transition: all .3s;
   &.--minimize { // サイドバー最小化時
     min-width: 60px;
