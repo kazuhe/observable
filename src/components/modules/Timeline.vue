@@ -19,11 +19,17 @@
         <table class="timeline_canvas">
           <tr class="timeline_canvas_head">
             <th class="timeline_canvas_name">Project name</th>
-            <td v-for="date in dates" :key="date.id" class="timeline_canvas_date">
-              <div>
+            <td
+            v-for="date in dates"
+            :key="date.id" class="timeline_canvas_date"
+            :class="[
+            today == date.date ? '-today': '',
+            date.weekDay === 'Sat' || date.weekDay === 'Sun' ? '-weekend' : ''
+            ]">
+              <div class="timeline_canvas_weekday">
                 {{ date.weekDay }}
               </div>
-              <div>
+              <div class="timeline_canvas_day" :class="today == date.date ? '-today': ''">
                 {{ date.id }}
               </div>
             </td>
@@ -32,7 +38,14 @@
             <th colspan="1" class="timeline_canvas_name">
               {{ project.fields.project.stringValue }}
             </th>
-            <td v-for="date in dates" :key="date.id" class="timeline_canvas_field">
+            <td
+            v-for="date in dates"
+            :key="date.id"
+            class="timeline_canvas_field"
+            :class="[
+            today == date.date ? '-today': '',
+            date.weekDay === 'Sat' || date.weekDay === 'Sun' ? '-weekend' : ''
+            ]">
 
               <!-- Start 案件期間 -->
               <div
@@ -45,8 +58,8 @@
 
               <!-- Start コメント条件分岐 -->
               <div v-if="project.fields.comment" class="timeline_canvas_comment">
-                <div v-if="commentCheck(project, date.date)">
-                  {{ commentCheck(project, date.date) }}
+                <div v-if="commentCheck(project.fields.comment.mapValue.fields, date.date)">
+                  {{ commentCheck(project.fields.comment.mapValue.fields, date.date) }}
                 </div>
               </div>
               <!-- End コメント条件分岐 -->
@@ -75,7 +88,8 @@ import Arrow from '@/components/svg/Arrow.vue';
 })
 export default class Timeline extends Vue {
 
-  generate: dayjs.Dayjs | string = dayjs().locale('ja'); // 現在日時のMomentオブジェクトを生成
+  generate: dayjs.Dayjs | string = dayjs().locale('ja'); // 基準となるMomentオブジェクトを生成
+  today: string = dayjs(this.generate).format('YYYY-MM-DD');
   dates: { id: number; date: string; weekDay: string } [] = [];
   projects: string[] = [];
 
@@ -110,48 +124,16 @@ export default class Timeline extends Vue {
   public nextMonth(): void {
     this.generate = dayjs(this.generate).add(1, 'month');
   }
-
-  public commentCheck(value: any, date: string) {
-    const comentDate = Object.keys(value.fields.comment.mapValue.fields);
-    if (comentDate[0] === date) {
-      return value.fields.comment.mapValue.fields[date].stringValue;
+  public commentCheck(value: { [date: string]: string }, date: string): string | boolean {
+    const comentDates = Object.keys(value)
+    for (let i = 0; i < comentDates.length; i++) {
+      if (comentDates[i] === date) {
+        return Object.values(value[date])[0];
+      }
     }
     return false;
   }
-  // public JudgmentPeriod(value: any): boolean { // カレント月に存在するか判定し表示させる
-  //   const ary: string[] = [];
-  //   console.log(value);
-  //   for (const v of this.dates) {
-  //     ary.push(v.date);
-  //   }
-  //   console.log(ary);
-  //   if (ary.indexOf(value.fields.start.stringValue)) {
-  //     const id = value.fields.id.stringValue // IDを取得
-  //     const start: string = value.fields.start.stringValue // 開始日を取得
-  //     const startInt: number = parseInt(start.substring(8, 10)) // 型を数字に変更
-  //     const end: string = value.fields.end.stringValue // 終了日を取得
-  //     const endInt: number = parseInt(end.substring(8, 10)) // 型を数字に変更
 
-  //     // const widthPeriod: number = endInt - startInt * 75
-
-  //     console.log(value.fields.start.stringValue);
-  //     console.log(startInt * 75);
-  //     this.eventStyle.left = startInt * 75 + 'px';
-  //     this.eventStyle.width = (endInt - startInt) * 75 + 'px';
-    
-  //     return true
-  //   }
-  //   return false
-  // }
-  // public JudgmentPeriod(value: string): boolean { // カレント月に存在するか判定し表示させる
-  //   for (const v of this.dates) {
-  //     if (v.date === value) {
-  //       console.log(v);
-  //       return true
-  //     }
-  //   }
-  //   return false
-  // }
 }
 </script>
 
@@ -240,16 +222,29 @@ export default class Timeline extends Vue {
   border-left: 1px solid $borderColor;
   border-bottom: 1px solid $borderColor;
   border-right: 1px solid $borderColor;
-  z-index: 1;
+  z-index: 2;
   font-size: 1.3rem;
   text-align: left;
 }
 .timeline_canvas_date {
   min-width: 75px;
   text-align: center;
+  &.-weekend {
+    min-width: 30px;
+    background-color: $thinColor;
+  }
+  &.-today {
+    background-color: lighten($mainColor, 40%);
+  }
 }
 .timeline_canvas_field {
   position: relative;
+  &.-weekend {
+    background-color: $thinColor;
+  }
+  &.-today {
+    background-color: lighten($mainColor, 40%);
+  }
 }
 .timeline_canvas_period {
   position: absolute;
@@ -257,11 +252,20 @@ export default class Timeline extends Vue {
   background: $mainColor;
   border-radius: 7px;
   height: 7px;
+  z-index: 1;
 }
 .timeline_canvas_comment {
   padding: 5px;
   font-size: 1.2rem;
   font-style: italic;
+}
+.timeline_canvas_weekday {
+  font-size: 1rem;
+}
+.timeline_canvas_day {
+  &.-today {
+    color: $mainColor;
+  }
 }
 // end - タイムライン描画
 </style>
