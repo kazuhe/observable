@@ -1,17 +1,33 @@
 <template>
-  <div>
-    {{ greet }}
-    <label for="project_name">ニックネーム:</label>
-    <input id="project_name" type="text" v-model="project_name">
-    <button @click="addProject('muni')"> 追加！</button>
-    <ul class="project_list">
-      <li v-for="(project, index) in projects" :key="project.name" class="project_item">
-        <a class="project_link" href="#">{{ project.fields.project.stringValue }}</a>
-        <div @click="removeProject(index)" class="project_trash">
-          <Trash />
+  <div class="project">
+    <div class="project_head">
+      <div class="project_title">{{ greet }}Project</div>
+    </div>
+    <div class="project_body">
+      <div class="project_addform">
+        <ul class="project_addform_list">
+          <li class="project_addform_item">
+            <label for="project_name">プロジェクト名</label>
+            <input id="project_name" type="text" v-model="project_name">
+          </li>
+          <li class="project_addform_item">
+            <label for="project_start">開始日</label>
+            <input id="project_start" type="text" v-model="project_start">
+          </li>
+        </ul>
+        <div class="project_addform_footer">
+          <button class="project_addform_button" @click="addProject('muni')">追加</button>
         </div>
-      </li>
-    </ul>
+      </div>
+      <ul class="project_list">
+        <li v-for="(project, index) in projects" :key="project.name" class="project_item">
+          <a class="project_link" href="#">{{ project.fields.project.stringValue }}</a>
+          <div @click="removeProject(index)" class="project_trash">
+            <Trash />
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -26,7 +42,8 @@ import Trash from '@/components/svg/Trash.vue';
   }
 })
 export default class Project extends Vue {
-  project_name = 'project name';
+  project_name = '';
+  project_start = '';
   projects: string[] = [];
 
   // @Watch('projects')
@@ -74,6 +91,18 @@ export default class Project extends Vue {
 </script>
 
 <style lang="scss">
+.project_head {
+  @include unit_head();
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.project_title {
+  @include unit_title();
+}
+.project_body {
+  @include unit_body();
+}
 .project_item {
   display: flex;
   align-items: center;
@@ -97,6 +126,45 @@ export default class Project extends Vue {
     &:hover {
       fill: $mainColor;
     }
+  }
+}
+.project_addform {
+  width: 300px;
+  box-shadow: 0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+  padding: 15px;
+  border-radius: 5px;
+}
+.project_addform_item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  input {
+    padding: 5px 10px;
+    font-size: 1rem;
+    color: $subColor;
+    border: 1px solid $borderColor;
+    border-radius: 5px;
+    &:focus {
+      border: 1px solid $subColor;
+      outline: 0;
+    }
+  }
+}
+.project_addform_footer {
+  text-align: right;
+}
+.project_addform_button {
+  padding: 3px 15px;
+  font-size: 1.2rem;
+  color: #fff;
+  border: none;
+  background: $deepColor;
+  border-radius: 5px;
+  transition: all .3s ease;
+  cursor: pointer;
+  &:hover {
+    background: $mainColor;
   }
 }
 </style>

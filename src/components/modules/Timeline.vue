@@ -230,7 +230,6 @@ export default class Timeline extends Vue {
   min-width: 75px;
   text-align: center;
   &.-weekend {
-    min-width: 30px;
     background-color: $thinColor;
   }
   &.-today {
