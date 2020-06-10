@@ -1,10 +1,11 @@
 <template>
-  <div id="app" class="container">
-    <Sidebar @munishi="muni" />
+  <div id="app" class="container" :class="{'-full': sidebarState}">
+    <Sidebar @click="minimizeSidebar" />
     <div class="main">
       <Header />
       <div class="main_inner">
         <p>{{ number }}</p>
+        {{sidebarState}}
         <button @click="increment">+</button>
         <router-view /> <!-- URLで判断されたrouterの中身を動的に表示 -->
       </div>
@@ -26,16 +27,17 @@ import Sidebar from '@/components/modules/Sidebar.vue';
 
 export default class App extends Vue { // Vueクラスを継承
   number = 5;
-  public sidebarMinimum = 'false'; // サイドバー最小化の状態管理
 
   increment () {
     return this.number += 1;
   }
 
-  public muni(value: string) {
-    console.log(value);
-    this.sidebarMinimum = value;
+  private sidebarState = false; // サイドバー最小化の状態管理
+
+  public minimizeSidebar(sidebarState: boolean){ // ← 引数で受け取る
+    this.sidebarState = sidebarState;
   }
+
 }
 </script>
 
@@ -74,11 +76,17 @@ li {
 .container {
   display: flex;
   height: 100vh;
+  &.-full { // サイドバー最小化時
+    .main {
+      padding-left: 60px;
+    }
+  }
 }
 .main {
   width: 100%;
   padding-left: 260px;
   background-color: $thinColor;
+  transition: all .3s;
 }
 .main_inner {
   padding: 0 30px;
