@@ -12,7 +12,7 @@
           </li>
           <li class="project_addform_item">
             <label for="project_start">開始日</label>
-            <input id="project_start" type="text" v-model="project_start">
+            <input id="project_start" type="text" v-model="project_start" class="project_addform_datepicker">
           </li>
         </ul>
         <div class="project_addform_footer">
@@ -33,8 +33,10 @@
 
 <script lang="ts">
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
-import axios from 'axios';
 import Trash from '@/components/svg/Trash.vue'; 
+import axios from 'axios';
+import flatpickr from "flatpickr";
+require("flatpickr/dist/themes/dark.css");
 
 @Component({
   components: {
@@ -59,6 +61,13 @@ export default class Project extends Vue {
     .then(response => {
       this.projects = response.data.documents;
       console.log(response.data.documents);
+    });
+  }
+
+  public mounted() { // 日付け入力用データピッカー
+    flatpickr(".project_addform_datepicker", {
+      mode: "range",
+      dateFormat: "Y-m-d",
     });
   }
 
