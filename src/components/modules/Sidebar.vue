@@ -11,10 +11,10 @@
       </div>
     </div>
     <ul class="sidebar_navi">
-      <router-link tag="li" to="/"><a>Home</a></router-link>
+      <router-link tag="li" to="/"><a><Buffer />Home</a></router-link>
       <router-link tag="li" to="/task"><a><Folder />Task</a></router-link>
-      <router-link tag="li" to="/calendar"><a>Calendar</a></router-link>
-      <router-link tag="li" to="/wiki/1"><a>Wiki</a></router-link>
+      <router-link tag="li" to="/calendar"><a><Calendar />Calendar</a></router-link>
+      <router-link tag="li" to="/wiki/1"><a><Edit />Wiki</a></router-link>
     </ul>
     <div class="sidebar_unit">
       <div class="sidebar_unit_title">Project</div>
@@ -29,12 +29,18 @@
 import { Component, Emit, Vue } from 'vue-property-decorator';
 import Project from '@/components/modules/Project.vue'; 
 import Logo from '@/components/svg/Logo.vue'; 
+import Buffer from '@/components/svg/Buffer.vue';
+import Calendar from '@/components/svg/Calendar.vue';
+import Edit from '@/components/svg/Edit.vue';
 import Folder from '@/components/svg/Folder.vue'; 
 
 @Component({
   components: {
     Project,
     Logo,
+    Buffer,
+    Calendar,
+    Edit,
     Folder
   }
 })

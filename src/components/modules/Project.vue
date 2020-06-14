@@ -2,23 +2,31 @@
   <div class="project">
     <div class="project_head">
       <div class="project_title">{{ greet }}Project</div>
+      <div class="project_label">
+        <div @click="openModal" class="project_label_inner">
+          <div class="project_label_plus">
+            <Plus />
+          </div>
+          Projectを追加
+        </div>
+        <Modal v-show="modal" @close="closeModal">
+          <ul class="project_addform_list">
+            <li class="project_addform_item">
+              <label for="project_name">プロジェクト名</label>
+              <input id="project_name" type="text" v-model="project_name">
+            </li>
+            <li class="project_addform_item">
+              <label for="project_start">開始日</label>
+              <input id="project_start" type="text" v-model="project_start" class="project_addform_datepicker">
+            </li>
+          </ul>
+          <div class="project_addform_footer">
+            <button class="project_addform_button" @click="addProject('muni')">追加</button>
+          </div>
+        </Modal>
+      </div>
     </div>
     <div class="project_body">
-      <div class="project_addform">
-        <ul class="project_addform_list">
-          <li class="project_addform_item">
-            <label for="project_name">プロジェクト名</label>
-            <input id="project_name" type="text" v-model="project_name">
-          </li>
-          <li class="project_addform_item">
-            <label for="project_start">開始日</label>
-            <input id="project_start" type="text" v-model="project_start" class="project_addform_datepicker">
-          </li>
-        </ul>
-        <div class="project_addform_footer">
-          <button class="project_addform_button" @click="addProject('muni')">追加</button>
-        </div>
-      </div>
       <ul class="project_list">
         <li v-for="(project, index) in projects" :key="project.name" class="project_item">
           <a class="project_link" href="#">{{ project.fields.project.stringValue }}</a>
@@ -32,29 +40,26 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
-import Trash from '@/components/svg/Trash.vue'; 
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import Modal from '@/components/modules/Modal.vue'
+import Trash from '@/components/svg/Trash.vue';
+import Plus from '@/components/svg/Plus.vue'; 
 import axios from 'axios';
 import flatpickr from "flatpickr";
 require("flatpickr/dist/themes/dark.css");
 
 @Component({
   components: {
-    Trash
+    Modal,
+    Trash,
+    Plus
   }
 })
 export default class Project extends Vue {
   project_name = '';
   project_start = '';
   projects: string[] = [];
-
-  // @Watch('projects')
-  // public update () {
-  //   axios.get('/projects')
-  //   .then(response => {
-  //     this.projects = response.data.documents;
-  //   });
-  // }
+  modal = false;
 
   public created() { // 非同期処理の中ではreturnは書けないので更新はwatchで監視
     axios.get('/projects')
@@ -69,6 +74,14 @@ export default class Project extends Vue {
       mode: "range",
       dateFormat: "Y-m-d",
     });
+  }
+
+  private openModal() {
+    this.modal = true;
+  }
+
+  private closeModal() {
+    this.modal = false;
   }
 
   private addProject () {
@@ -109,6 +122,43 @@ export default class Project extends Vue {
 .project_title {
   @include unit_title();
 }
+.project_label {
+  position: relative;
+  &:hover {
+    .project_label_plus {
+      background-color: $thinColor;
+    }
+  }
+}
+.project_label_inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+    color: $mainColor;
+  }
+}
+.project_label_plus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  margin-right: 5px;
+  cursor: pointer;
+  svg {
+    display: block;
+    width: 10px;
+    fill: $subColor;
+  }
+  &:hover {
+    background-color: $thinColor;
+  }
+}
 .project_body {
   @include unit_body();
 }
@@ -136,12 +186,6 @@ export default class Project extends Vue {
       fill: $mainColor;
     }
   }
-}
-.project_addform {
-  width: 300px;
-  box-shadow: 0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
-  padding: 15px;
-  border-radius: 5px;
 }
 .project_addform_item {
   display: flex;
@@ -176,4 +220,17 @@ export default class Project extends Vue {
     background: $mainColor;
   }
 }
+
+// start - デートピッカー
+.flatpickr-calendar {
+  background: $deepColor;
+}
+.flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange, .flatpickr-day.selected.inRange, .flatpickr-day.startRange.inRange, .flatpickr-day.endRange.inRange, .flatpickr-day.selected:focus, .flatpickr-day.startRange:focus, .flatpickr-day.endRange:focus, .flatpickr-day.selected:hover, .flatpickr-day.startRange:hover, .flatpickr-day.endRange:hover, .flatpickr-day.selected.prevMonthDay, .flatpickr-day.startRange.prevMonthDay, .flatpickr-day.endRange.prevMonthDay, .flatpickr-day.selected.nextMonthDay, .flatpickr-day.startRange.nextMonthDay, .flatpickr-day.endRange.nextMonthDay {
+  background: $mainColor;
+  border-color: $mainColor;
+}
+.flatpickr-months .flatpickr-prev-month:hover svg, .flatpickr-months .flatpickr-next-month:hover svg {
+    fill: $mainColor;
+}
+// end - デートピッカー
 </style>
