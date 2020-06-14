@@ -16,8 +16,8 @@
               <input id="project_name" type="text" v-model="project_name">
             </li>
             <li class="project_addform_item">
-              <label for="project_start">開始日</label>
-              <input id="project_start" type="text" v-model="project_start" class="project_addform_datepicker">
+              <label for="project_period">期間</label>
+              <input id="project_period" type="text" v-model="project_period" class="project_addform_datepicker">
             </li>
           </ul>
           <div class="project_addform_footer">
@@ -27,14 +27,28 @@
       </div>
     </div>
     <div class="project_body">
-      <ul class="project_list">
-        <li v-for="(project, index) in projects" :key="project.name" class="project_item">
-          <a class="project_link" href="#">{{ project.fields.project.stringValue }}</a>
-          <div @click="removeProject(index)" class="project_trash">
-            <Trash />
-          </div>
-        </li>
-      </ul>
+      <table class="project_table">
+        <thead>
+          <tr>
+            <td class="project_table_name">案件名</td>
+            <td>設定</td>
+            <td>削除</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(project, index) in projects" :key="project.name">
+            <td class="project_table_name">
+              {{ project.fields.project.stringValue }}
+            </td>
+            <td class="project_icon">
+              <Cog />
+            </td>
+            <td @click="removeProject(index)" class="project_icon">
+              <Trash />
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -42,26 +56,33 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Modal from '@/components/modules/Modal.vue'
+import Cog from '@/components/svg/Cog.vue';
 import Trash from '@/components/svg/Trash.vue';
 import Plus from '@/components/svg/Plus.vue'; 
 import axios from 'axios';
 import flatpickr from "flatpickr";
 require("flatpickr/dist/themes/dark.css");
 
+import dayjs from 'dayjs'; // 日付を解析、検証、操作するためのライブラリ
+import utc from "dayjs/plugin/utc"; // dayjsを日本仕様で扱うためのプラグイン
+dayjs.extend(utc);
+
 @Component({
   components: {
     Modal,
+    Cog,
     Trash,
     Plus
   }
 })
 export default class Project extends Vue {
   project_name = '';
-  project_start = '';
+  project_period = '';
   projects: string[] = [];
   modal = false;
+  // datepicker: flatpickr.Instance | flatpickr.Instance[] | string = '';
 
-  public created() { // 非同期処理の中ではreturnは書けないので更新はwatchで監視
+  public getProjects() { 
     axios.get('/projects')
     .then(response => {
       this.projects = response.data.documents;
@@ -69,11 +90,20 @@ export default class Project extends Vue {
     });
   }
 
+  public created() {
+    this.getProjects();
+  }
+
   public mounted() { // 日付け入力用データピッカー
     flatpickr(".project_addform_datepicker", {
       mode: "range",
       dateFormat: "Y-m-d",
     });
+  }
+
+  private destroyed() { // 強引だけどflatpickrをdestroy
+    const fp = document.querySelectorAll('.flatpickr-calendar');
+    document.body.removeChild(fp[0]);
   }
 
   private openModal() {
@@ -85,17 +115,30 @@ export default class Project extends Vue {
   }
 
   private addProject () {
-    // this.projects.push(projects);
-    axios.post('/projects',
-      {
-        fields: { // Firebase Cloud Firestore 固有のdata指定方法
-          project: {
-            stringValue: this.project_name
-          }
+    const projectPeriod = this.project_period.split(' ');
+    const period = dayjs(projectPeriod[2]).diff(projectPeriod[0], 'd');
+    axios.post('/projects', {
+      fields: { // Firebase Cloud Firestore 固有のdata指定方法
+        project: {
+          stringValue: this.project_name
+        },
+        id: {
+          integerValue: 5
+        },
+        start: {
+          stringValue: projectPeriod[0]
+        },
+        end: {
+          stringValue: projectPeriod[2]
+        },
+        period: {
+          integerValue: period + 1
         }
       }
-    )
-    .then(response => {
+    })
+    .then(response => { // post成功した場合
+      this.getProjects();
+      this.closeModal();
       console.log(response);
     })
     .catch(error => {
@@ -161,26 +204,13 @@ export default class Project extends Vue {
 }
 .project_body {
   @include unit_body();
+  padding: 15px 0;
 }
-.project_item {
-  display: flex;
-  align-items: center;
-  + li {
-    margin-top: 5px;
-  }
-}
-.project_link {
-  &:hover {
-    text-decoration: underline;
-    color: $mainColor;
-  }
-}
-.project_trash {
+.project_icon {
   > svg {
     width: 10px;
     height: auto;
     fill: $subColor;
-    margin-left: 10px;
     cursor: pointer;
     &:hover {
       fill: $mainColor;
@@ -218,6 +248,42 @@ export default class Project extends Vue {
   cursor: pointer;
   &:hover {
     background: $mainColor;
+  }
+}
+.project_table {
+  position: relative;
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  tr {
+    height: 40px;
+    padding: 0 30px;
+    border-bottom: 1px solid $borderColor;
+  }
+  td {
+    text-align: center;
+  }
+  thead {
+    .project_table_name {
+      text-align: left;
+      padding-left: 30px;
+    }
+  }
+  tbody {
+    .project_table_name {
+      text-align: left;
+      padding-left: 30px;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+        color: $mainColor;
+      }
+    }
+    tr {
+      &:last-child {
+        border-bottom: none;
+      }
+    }
   }
 }
 
