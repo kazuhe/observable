@@ -1,37 +1,13 @@
 <template>
-  <div id="app" class="container" :class="{'-full': sidebarState}">
-    <Sidebar @click="minimizeSidebar" />
-    <div class="main">
-      <Header />
-      <div class="main_inner">
-        <p>{{ number }}</p>
-        {{sidebarState}}
-        <button @click="increment">+</button>
-        <router-view /> <!-- URLで判断されたrouterの中身を動的に表示 -->
-      </div>
-    </div>
+  <div id="app" class="container">
+    <router-view /> <!-- URLで判断されたrouterの中身を動的に表示 -->
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import Header from '@/components/modules/Header.vue';
-import Sidebar from '@/components/modules/Sidebar.vue';
-
-@Component({ // VueがClassを認識するためのアノテーション
-  components: {
-    Header,
-    Sidebar
-  },
-})
+import { Vue } from 'vue-property-decorator';
 
 export default class App extends Vue { // Vueクラスを継承
-  number = 5;
-
-  increment () {
-    return this.number += 1;
-  }
-
   private sidebarState = false; // サイドバー最小化の状態管理
 
   public minimizeSidebar(sidebarState: boolean){ // ← 引数で受け取る
@@ -76,20 +52,6 @@ li {
 .container {
   display: flex;
   height: 100vh;
-  &.-full { // サイドバー最小化時
-    .main {
-      padding-left: 60px;
-    }
-  }
-}
-.main {
-  width: 100%;
-  padding-left: 260px;
-  background-color: $thinColor;
-  transition: all .3s;
-}
-.main_inner {
-  padding: 0 30px;
 }
 
 // unit Compornets

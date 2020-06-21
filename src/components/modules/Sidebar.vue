@@ -70,9 +70,7 @@ export default class Sidebar extends Vue {
   min-width: 260px;
   width: 260px;
   transition: all .3s;
-}
-.container.-full { // サイドバー最小化時
-  .sidebar {
+  &.-mini { // サイドバー最小化時
     min-width: 60px;
     width: 60px;
     .sidebar__brand_logo {

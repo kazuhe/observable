@@ -11,22 +11,25 @@ const routes: Array<RouteConfig> = [
     component: Home
   },
   {
+    path: '/signup',
+    name: 'Signup',
+    // component: Signup
+    component: () => import('../views/Signup.vue')
+  },
+  {
     path: '/task',
     name: 'Task',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Task.vue')
+    component: () => import('../views/Task.vue')
   },
   {
     path: '/calendar',
     name: 'Calendar',
-    component: () => import(/* webpackChunkName: "calendar" */ '../views/Calendar.vue')
+    component: () => import('../views/Calendar.vue')
   },
   {
     path: '/wiki/:id',
     name: 'Wiki',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Wiki.vue')
+    component: () => import('../views/Wiki.vue')
   }
 ]
 

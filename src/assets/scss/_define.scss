@@ -1,4 +1,6 @@
-// Defines color
+/*
+* Defines color
+*/
 $mainColor: #ffa713;
 $subColor: #838fa0;
 $textColor :#48465b;
@@ -6,11 +8,31 @@ $borderColor: #d1d7e0;
 $thinColor: #f3f8ff;
 $deepColor: #273444;
 
-// Defines font
+
+
+/*
+* Defines font
+*/
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
 
-// Defines unit
+
+
+/*
+* Defines css component
+*/
+// main
+@mixin main() {
+  width: 100%;
+  padding-left: 260px;
+  background-color: $thinColor;
+  transition: all .3s;
+}
+@mixin inner() {
+  padding: 30px;
+}
+
+// unit
 @mixin unit_head() {
   padding: 0 30px;
   border-bottom: 1px solid $borderColor;
