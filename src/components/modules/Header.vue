@@ -5,19 +5,35 @@
         h
       </div>
       <div>
-       <!--  <router-link to="/">HOME</router-link>
-        <router-link to="/test">TEST</router-link> -->
+        <button @click="changeUserState">{{ userMessage }}</button>
       </div>
     </div>
   </header>
 </template>
 
-<script>
+<script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import firebase from 'firebase'
 
 @Component
 export default class Header extends Vue {
-
+  /*
+  * Defines Authentication
+  */
+  private userMessage = '';
+  public created() {
+    const userState = firebase.auth().currentUser;
+    if(userState) {
+      this.userMessage = 'Sign Out';
+    } else {
+      this.userMessage = 'Sign In';
+    }
+  }
+  private changeUserState() {
+    firebase.auth().signOut().then(() => {
+      this.$router.push('/signin')
+    })
+  }
 }
 </script>
 

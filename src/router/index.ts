@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/Home.vue'
+import firebase from 'firebase'
 
 Vue.use(VueRouter) // useでプラグイン使用宣言
 
@@ -13,13 +14,18 @@ const routes: Array<RouteConfig> = [
   {
     path: '/signup',
     name: 'Signup',
-    // component: Signup
     component: () => import('../views/Signup.vue')
+  },
+  {
+    path: '/signin',
+    name: 'Signin',
+    component: () => import('../views/Signin.vue')
   },
   {
     path: '/task',
     name: 'Task',
-    component: () => import('../views/Task.vue')
+    component: () => import('../views/Task.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/calendar',
@@ -29,7 +35,8 @@ const routes: Array<RouteConfig> = [
   {
     path: '/wiki/:id',
     name: 'Wiki',
-    component: () => import('../views/Wiki.vue')
+    component: () => import('../views/Wiki.vue'),
+    meta: { requiresAuth: true }
   }
 ]
 
@@ -38,5 +45,24 @@ const router = new VueRouter({
   base: process.env.BASE_URL, // 全てのアクセスをindex.htmlに集める
   routes
 })
+
+// beforeEachで遷移前に実行(to(現在遷移しようとしている対象), from(遷移元ルートの情報), next)
+router.beforeEach((to, from, next) => {
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  if (requiresAuth) {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        next()
+      } else {
+        next({
+          path: '/signin',
+          query: { redirect: to.fullPath }
+        })
+      }
+    })
+  } else {
+    next()
+  }
+});
 
 export default router

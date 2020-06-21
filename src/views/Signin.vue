@@ -1,15 +1,15 @@
 <template>
-  <div class="signup">
-    <div class="signup_inner">
-      <h2>Sign up</h2>
-      <p>新規アカウント登録</p>
-      <div class="signup_input">
+  <div class="signin">
+    <div class="signin_inner">
+      <h2>Sign in</h2>
+      <p>おかえりなさい</p>
+      <div class="signin_input">
         <input type="text" placeholder="Email" v-model="email">
         <input type="password" placeholder="Password" v-model="password">
       </div>
-      <button @click="signUp()">Register</button>
-      <p class="signup_annotation">アカウントを持っているなら 
-        <router-link to="/signin">sign in now!!</router-link>
+      <button @click="signIn">Signin</button>
+      <p class="signin_annotation">アカウントを持っていない方は 
+        <router-link to="/signup">sign up now!!</router-link>
       </p>
     </div>
   </div>
@@ -18,7 +18,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import firebase from 'firebase'
-// import Unit from '@/components/modules/Unit.vue';
 
 @Component({
   components: {
@@ -26,27 +25,27 @@ import firebase from 'firebase'
   },
 })
 
-export default class Signup extends Vue {
+export default class Signin extends Vue {
   /*
-  * Defines Sign Up
+  * Defines Sign In
   */
   private email = '';
   private password = '';
 
-  private signUp() {
-    firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+  private signIn(): void {
+    firebase.auth().signInWithEmailAndPassword(this.email, this.password)
     .then(user => {
       this.$router.push('/');
     })
     .catch(error => {
       alert(error.message);
     })
-  }
+  } 
 }
 </script>
 
 <style lang="scss">
-.signup {
+.signin {
   display: flex;
   align-items: center;
   justify-content: center;
