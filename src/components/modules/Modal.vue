@@ -1,7 +1,6 @@
 <template>
   <div class="modal">
-    <div @click="$emit('close')" class="modal_overlay">
-    </div>
+    <div @click="$emit('close')" class="modal_overlay"></div>
     <div class="modal_inner">
       <slot></slot>
     </div>
@@ -9,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator'
 
 @Component
 export default class Modal extends Vue {}
@@ -29,7 +28,7 @@ export default class Modal extends Vue {}
   left: 0;
   width: 100%;
   height: 100%;
-  // background: rgba(0, 0, 0, 0.5);  
+  // background: rgba(0, 0, 0, 0.5);
 }
 .modal_inner {
   position: absolute;
@@ -37,7 +36,8 @@ export default class Modal extends Vue {}
   right: 0;
   background: #fff;
   width: 300px;
-  box-shadow: 0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+  box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3),
+    0 1px 3px 1px rgba(60, 64, 67, 0.15);
   padding: 15px;
   border-radius: 5px;
   z-index: 2;

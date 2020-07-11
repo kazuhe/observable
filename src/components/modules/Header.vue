@@ -12,27 +12,30 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator'
 import firebase from 'firebase'
 
 @Component
 export default class Header extends Vue {
   /*
-  * Defines Authentication
-  */
-  private userMessage = '';
+   * Defines Authentication
+   */
+  private userMessage = ''
   public created() {
-    const userState = firebase.auth().currentUser;
-    if(userState) {
-      this.userMessage = 'Sign Out';
+    const userState = firebase.auth().currentUser
+    if (userState) {
+      this.userMessage = 'Sign Out'
     } else {
-      this.userMessage = 'Sign In';
+      this.userMessage = 'Sign In'
     }
   }
   private changeUserState() {
-    firebase.auth().signOut().then(() => {
-      this.$router.push('/signin')
-    })
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        this.$router.push('/signin')
+      })
   }
 }
 </script>

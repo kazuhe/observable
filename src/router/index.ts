@@ -9,60 +9,54 @@ const routes: Array<RouteConfig> = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
   },
   {
     path: '/signup',
     name: 'Signup',
-    component: () => import('../views/Signup.vue')
+    component: () => import('../views/Signup.vue'),
   },
   {
     path: '/signin',
     name: 'Signin',
-    component: () => import('../views/Signin.vue')
+    component: () => import('../views/Signin.vue'),
   },
   {
     path: '/task',
     name: 'Task',
     component: () => import('../views/Task.vue'),
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
   },
   {
     path: '/calendar',
     name: 'Calendar',
-    component: () => import('../views/Calendar.vue')
+    component: () => import('../views/Calendar.vue'),
   },
-  {
-    path: '/wiki/:id',
-    name: 'Wiki',
-    component: () => import('../views/Wiki.vue'),
-    meta: { requiresAuth: true }
-  }
 ]
 
 const router = new VueRouter({
   mode: 'history', // URLからハッシュを削除
   base: process.env.BASE_URL, // 全てのアクセスをindex.htmlに集める
-  routes
+  routes,
 })
 
 // beforeEachで遷移前に実行(to(現在遷移しようとしている対象), from(遷移元ルートの情報), next)
-router.beforeEach((to, from, next) => {
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-  if (requiresAuth) {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        next()
-      } else {
-        next({
-          path: '/signin',
-          query: { redirect: to.fullPath }
-        })
-      }
-    })
-  } else {
-    next()
-  }
-});
+// router.beforeEach((to, from, next) => {
+//   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+//   if (requiresAuth) {
+//     firebase.auth().onAuthStateChanged(user => {
+//       if (user) {
+//         next()
+//       } else {
+//         next({
+//           path: '/signin',
+//           query: { redirect: to.fullPath }
+//         })
+//       }
+//     })
+//   } else {
+//     next()
+//   }
+// });
 
 export default router

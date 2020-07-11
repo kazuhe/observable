@@ -11,10 +11,15 @@
       </div>
     </div>
     <ul class="sidebar_navi">
-      <router-link tag="li" to="/"><a><Buffer />Home</a></router-link>
-      <router-link tag="li" to="/task"><a><Folder />Task</a></router-link>
-      <router-link tag="li" to="/calendar"><a><Calendar />Calendar</a></router-link>
-      <router-link tag="li" to="/wiki/1"><a><Edit />Wiki</a></router-link>
+      <router-link tag="li" to="/">
+        <a><Buffer />Home</a>
+      </router-link>
+      <router-link tag="li" to="/task">
+        <a><Folder />Task</a>
+      </router-link>
+      <router-link tag="li" to="/calendar">
+        <a><Calendar />Calendar</a>
+      </router-link>
     </ul>
     <div class="sidebar_unit">
       <div class="sidebar_unit_title">Project</div>
@@ -26,13 +31,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, Vue } from 'vue-property-decorator';
-import Project from '@/components/modules/Project.vue'; 
-import Logo from '@/components/svg/Logo.vue'; 
-import Buffer from '@/components/svg/Buffer.vue';
-import Calendar from '@/components/svg/Calendar.vue';
-import Edit from '@/components/svg/Edit.vue';
-import Folder from '@/components/svg/Folder.vue'; 
+import { Component, Emit, Vue } from 'vue-property-decorator'
+import Project from '@/components/modules/Project.vue'
+import Logo from '@/components/svg/Logo.vue'
+import Buffer from '@/components/svg/Buffer.vue'
+import Calendar from '@/components/svg/Calendar.vue'
+import Edit from '@/components/svg/Edit.vue'
+import Folder from '@/components/svg/Folder.vue'
 
 @Component({
   components: {
@@ -41,22 +46,21 @@ import Folder from '@/components/svg/Folder.vue';
     Buffer,
     Calendar,
     Edit,
-    Folder
-  }
+    Folder,
+  },
 })
 export default class Sidebar extends Vue {
-  private sidebarState = false; // サイドバー最小化の状態管理
+  private sidebarState = false // サイドバー最小化の状態管理
 
   // clickをトリガーに「sidebarState」の状態を親コンポーネントに渡す
   @Emit()
   public click(sidebarState: boolean) {
     return sidebarState
   }
-  public minimizeSidebar(){
-    this.sidebarState = !this.sidebarState;
-    this.click(this.sidebarState);
+  public minimizeSidebar() {
+    this.sidebarState = !this.sidebarState
+    this.click(this.sidebarState)
   }
-
 }
 </script>
 
@@ -69,8 +73,9 @@ export default class Sidebar extends Vue {
   background-color: $deepColor;
   min-width: 260px;
   width: 260px;
-  transition: all .3s;
-  &.-mini { // サイドバー最小化時
+  transition: all 0.3s;
+  &.-mini {
+    // サイドバー最小化時
     min-width: 60px;
     width: 60px;
     .sidebar__brand_logo {
@@ -129,7 +134,8 @@ export default class Sidebar extends Vue {
       fill: $subColor;
     }
   }
-  .router-link-exact-active { // メニューactive時
+  .router-link-exact-active {
+    // メニューactive時
     background-color: darken($deepColor, 5%);
     a {
       color: #fff;

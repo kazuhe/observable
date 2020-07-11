@@ -4,11 +4,12 @@
       <h2>Sign in</h2>
       <p>おかえりなさい</p>
       <div class="signin_input">
-        <input type="text" placeholder="Email" v-model="email">
-        <input type="password" placeholder="Password" v-model="password">
+        <input type="text" placeholder="Email" v-model="email" />
+        <input type="password" placeholder="Password" v-model="password" />
       </div>
       <button @click="signIn">Signin</button>
-      <p class="signin_annotation">アカウントを持っていない方は 
+      <p class="signin_annotation">
+        アカウントを持っていない方は
         <router-link to="/signup">sign up now!!</router-link>
       </p>
     </div>
@@ -16,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator'
 import firebase from 'firebase'
 
 @Component({
@@ -24,23 +25,24 @@ import firebase from 'firebase'
     // Unit
   },
 })
-
 export default class Signin extends Vue {
   /*
-  * Defines Sign In
-  */
-  private email = '';
-  private password = '';
+   * Defines Sign In
+   */
+  private email = ''
+  private password = ''
 
   private signIn(): void {
-    firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-    .then(user => {
-      this.$router.push('/');
-    })
-    .catch(error => {
-      alert(error.message);
-    })
-  } 
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(this.email, this.password)
+      .then((user) => {
+        this.$router.push('/')
+      })
+      .catch((error) => {
+        alert(error.message)
+      })
+  }
 }
 </script>
 
@@ -58,7 +60,8 @@ export default class Signin extends Vue {
     padding: 30px;
     background: #fff;
     border-radius: 5px;
-    box-shadow: 0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3),
+      0 1px 3px 1px rgba(60, 64, 67, 0.15);
     text-align: center;
   }
 
@@ -95,7 +98,7 @@ export default class Signin extends Vue {
     border: none;
     background: $deepColor;
     border-radius: 5px;
-    transition: all .3s ease;
+    transition: all 0.3s ease;
     cursor: pointer;
     margin-top: 30px;
     &:hover {

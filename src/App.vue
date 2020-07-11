@@ -1,19 +1,21 @@
 <template>
   <div id="app" class="container">
-    <router-view /> <!-- URLで判断されたrouterの中身を動的に表示 -->
+    <router-view />
+    <!-- URLで判断されたrouterの中身を動的に表示 -->
   </div>
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-property-decorator';
+import { Vue } from 'vue-property-decorator'
 
-export default class App extends Vue { // Vueクラスを継承
-  private sidebarState = false; // サイドバー最小化の状態管理
+export default class App extends Vue {
+  // Vueクラスを継承
+  private sidebarState = false // サイドバー最小化の状態管理
 
-  public minimizeSidebar(sidebarState: boolean){ // ← 引数で受け取る
-    this.sidebarState = sidebarState;
+  public minimizeSidebar(sidebarState: boolean) {
+    // ← 引数で受け取る
+    this.sidebarState = sidebarState
   }
-
 }
 </script>
 
@@ -58,6 +60,7 @@ li {
 .unit {
   background: #fff;
   border-radius: 5px;
-  box-shadow: 0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+  box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3),
+    0 1px 3px 1px rgba(60, 64, 67, 0.15);
 }
 </style>
