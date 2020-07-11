@@ -10,22 +10,8 @@
         <span></span>
       </div>
     </div>
-    <ul class="sidebar_navi">
-      <router-link tag="li" to="/">
-        <a><Buffer />Home</a>
-      </router-link>
-      <router-link tag="li" to="/task">
-        <a><Folder />Task</a>
-      </router-link>
-      <router-link tag="li" to="/calendar">
-        <a><Calendar />Calendar</a>
-      </router-link>
-    </ul>
     <div class="sidebar_unit">
-      <div class="sidebar_unit_title">Project</div>
-      <div class="sidebar_unit_inner">
-        <!-- <Project greet="Hello!" /> -->
-      </div>
+      <Project greet="Hello!" />
     </div>
   </div>
 </template>
@@ -34,19 +20,11 @@
 import { Component, Emit, Vue } from 'vue-property-decorator'
 import Project from '@/components/modules/Project.vue'
 import Logo from '@/components/svg/Logo.vue'
-import Buffer from '@/components/svg/Buffer.vue'
-import Calendar from '@/components/svg/Calendar.vue'
-import Edit from '@/components/svg/Edit.vue'
-import Folder from '@/components/svg/Folder.vue'
 
 @Component({
   components: {
     Project,
     Logo,
-    Buffer,
-    Calendar,
-    Edit,
-    Folder,
   },
 })
 export default class Sidebar extends Vue {
@@ -76,13 +54,15 @@ export default class Sidebar extends Vue {
   transition: all 0.3s;
   &.-mini {
     // サイドバー最小化時
-    min-width: 60px;
-    width: 60px;
-    .sidebar__brand_logo {
+    min-width: 0;
+    width: 0;
+    .sidebar__brand_logo,
+    .sidebar_unit {
       display: none;
     }
   }
 }
+
 .sidebar__brand {
   position: relative;
   display: flex;
@@ -118,40 +98,7 @@ export default class Sidebar extends Vue {
     background-color: $deepColor;
   }
 }
-.sidebar_navi {
-  li {
-    padding: 10px 15px 10px 30px;
-    a {
-      display: flex;
-      align-items: center;
-      font-weight: 600;
-      color: $subColor;
-    }
-    svg {
-      display: block;
-      margin-right: 5px;
-      width: 19px;
-      fill: $subColor;
-    }
-  }
-  .router-link-exact-active {
-    // メニューactive時
-    background-color: darken($deepColor, 5%);
-    a {
-      color: #fff;
-    }
-    svg {
-      fill: #fff;
-    }
-  }
-}
 .sidebar_unit {
   margin-top: 30px;
-}
-.sidebar_unit_title {
-  display: block;
-  padding: 10px 15px 10px 30px;
-  font-weight: 600;
-  color: $subColor;
 }
 </style>

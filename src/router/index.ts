@@ -21,17 +21,6 @@ const routes: Array<RouteConfig> = [
     name: 'Signin',
     component: () => import('../views/Signin.vue'),
   },
-  {
-    path: '/task',
-    name: 'Task',
-    component: () => import('../views/Task.vue'),
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/calendar',
-    name: 'Calendar',
-    component: () => import('../views/Calendar.vue'),
-  },
 ]
 
 const router = new VueRouter({

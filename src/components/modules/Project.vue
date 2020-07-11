@@ -1,13 +1,12 @@
 <template>
   <div class="project">
     <div class="project_head">
-      <div class="project_title">{{ greet }}Project</div>
+      <div class="project_title"><Buffer />Project</div>
       <div class="project_label">
         <div @click="openModal" class="project_label_inner">
           <div class="project_label_plus">
             <Plus />
           </div>
-          Projectを追加
         </div>
         <Modal v-show="modal" @close="closeModal">
           <ul class="project_addform_list">
@@ -33,30 +32,16 @@
         </Modal>
       </div>
     </div>
-    <div class="project_body">
-      <table class="project_table">
-        <thead>
-          <tr>
-            <td class="project_table_name">案件名</td>
-            <td>設定</td>
-            <td>削除</td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(project, index) in projects" :key="project.name">
-            <td class="project_table_name">
-              {{ project.fields.project.stringValue }}
-            </td>
-            <td class="project_icon">
-              <Cog />
-            </td>
-            <td @click="removeProject(index)" class="project_icon">
-              <Trash />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <table class="project_table">
+      <tr v-for="(project, index) in projects" :key="project.name">
+        <td class="project_table_name">
+          {{ project.fields.project.stringValue }}
+        </td>
+        <td @click="removeProject(index)" class="project_table_icon">
+          <Cog />
+        </td>
+      </tr>
+    </table>
   </div>
 </template>
 
@@ -64,8 +49,8 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import Modal from '@/components/modules/Modal.vue'
 import Cog from '@/components/svg/Cog.vue'
-import Trash from '@/components/svg/Trash.vue'
 import Plus from '@/components/svg/Plus.vue'
+import Buffer from '@/components/svg/Buffer.vue'
 import axios from 'axios'
 import flatpickr from 'flatpickr'
 require('flatpickr/dist/themes/dark.css')
@@ -78,8 +63,8 @@ dayjs.extend(utc)
   components: {
     Modal,
     Cog,
-    Trash,
     Plus,
+    Buffer,
   },
 })
 export default class Project extends Vue {
@@ -167,23 +152,78 @@ export default class Project extends Vue {
 </script>
 
 <style lang="scss">
-.project_head {
-  @include unit_head();
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.project_title {
-  @include unit_title();
-}
-.project_label {
-  position: relative;
-  &:hover {
-    .project_label_plus {
-      background-color: $thinColor;
+.project {
+  color: $thinColor;
+
+  &_head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+  }
+
+  &_title {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1.6rem;
+    svg {
+      display: block;
+      margin-right: 10px;
+      width: 15px;
+      fill: $thinColor;
+    }
+  }
+
+  &_label {
+    position: relative;
+    &_plus {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 20px;
+      margin-right: 5px;
+      background-color: darken($deepColor, 5%);
+      cursor: pointer;
+      svg {
+        display: block;
+        width: 10px;
+        fill: $subColor;
+      }
+      &:hover {
+        background-color: $thinColor;
+      }
+    }
+  }
+
+  &_table {
+    position: relative;
+    width: 100%;
+    margin-top: 10px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    &_icon {
+      padding: 15px 30px 0 0;
+      text-align: center;
+      > svg {
+        width: 12px;
+        height: auto;
+        fill: $subColor;
+        cursor: pointer;
+        &:hover {
+          fill: $thinColor;
+        }
+      }
+    }
+    &_name {
+      text-align: left;
+      padding: 15px 0 0 30px;
     }
   }
 }
+
 .project_label_inner {
   display: flex;
   align-items: center;
@@ -195,39 +235,7 @@ export default class Project extends Vue {
     color: $mainColor;
   }
 }
-.project_label_plus {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 20px;
-  margin-right: 5px;
-  cursor: pointer;
-  svg {
-    display: block;
-    width: 10px;
-    fill: $subColor;
-  }
-  &:hover {
-    background-color: $thinColor;
-  }
-}
-.project_body {
-  @include unit_body();
-  padding: 15px 0;
-}
-.project_icon {
-  > svg {
-    width: 10px;
-    height: auto;
-    fill: $subColor;
-    cursor: pointer;
-    &:hover {
-      fill: $mainColor;
-    }
-  }
-}
+
 .project_addform_item {
   display: flex;
   align-items: center;
@@ -259,42 +267,6 @@ export default class Project extends Vue {
   cursor: pointer;
   &:hover {
     background: $mainColor;
-  }
-}
-.project_table {
-  position: relative;
-  width: 100%;
-  border-collapse: collapse;
-  border-spacing: 0;
-  tr {
-    height: 40px;
-    padding: 0 30px;
-    border-bottom: 1px solid $borderColor;
-  }
-  td {
-    text-align: center;
-  }
-  thead {
-    .project_table_name {
-      text-align: left;
-      padding-left: 30px;
-    }
-  }
-  tbody {
-    .project_table_name {
-      text-align: left;
-      padding-left: 30px;
-      cursor: pointer;
-      &:hover {
-        text-decoration: underline;
-        color: $mainColor;
-      }
-    }
-    tr {
-      &:last-child {
-        border-bottom: none;
-      }
-    }
   }
 }
 

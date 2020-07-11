@@ -1,9 +1,6 @@
 <template>
   <header class="header">
     <div class="header__inner">
-      <div class="header__a">
-        h
-      </div>
       <div>
         <button @click="changeUserState">{{ userMessage }}</button>
       </div>
