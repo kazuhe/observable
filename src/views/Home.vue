@@ -4,7 +4,7 @@
     <Header />
     <div class="home_inner">
       <div class="unit">
-        <Timeline />
+        <!-- <Timeline /> -->
       </div>
     </div>
   </div>

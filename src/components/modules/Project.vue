@@ -12,20 +12,20 @@
           <ul class="project_addform_list">
             <li class="project_addform_item">
               <label for="project_name">プロジェクト名</label>
-              <input id="project_name" type="text" v-model="project_name" />
+              <input id="project_name" type="text" v-model="project.name" />
             </li>
             <li class="project_addform_item">
               <label for="project_period">期間</label>
               <input
                 id="project_period"
                 type="text"
-                v-model="project_period"
+                v-model="project.period"
                 class="project_addform_datepicker"
               />
             </li>
           </ul>
           <div class="project_addform_footer">
-            <button class="project_addform_button" @click="addProject('muni')">
+            <button class="project_addform_button" @click="addProject()">
               追加
             </button>
           </div>
@@ -33,12 +33,10 @@
       </div>
     </div>
     <table class="project_table">
-      <tr v-for="(project, index) in projects" :key="project.name">
-        <td class="project_table_name">
-          {{ project.fields.project.stringValue }}
-        </td>
-        <td @click="removeProject(index)" class="project_table_icon">
-          <Cog />
+      <tr v-for="project in projects" :key="project.name">
+        <td>{{ project.name }}</td>
+        <td @click="removeProject(project.name)">
+          <Trash />
         </td>
       </tr>
     </table>
@@ -46,15 +44,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+// Vue API
+import { Component, Mixins } from 'vue-property-decorator'
+
+// Original components
 import Modal from '@/components/modules/Modal.vue'
-import Cog from '@/components/svg/Cog.vue'
+import Trash from '@/components/svg/Trash.vue'
 import Plus from '@/components/svg/Plus.vue'
 import Buffer from '@/components/svg/Buffer.vue'
-import axios from 'axios'
+
+// Mixins
+import Firestore from '@/components/mixins/firestore'
+
+// Flatpickr
 import flatpickr from 'flatpickr'
 require('flatpickr/dist/themes/dark.css')
 
+// Dayjs
 import dayjs from 'dayjs' // 日付を解析、検証、操作するためのライブラリ
 import utc from 'dayjs/plugin/utc' // dayjsを日本仕様で扱うためのプラグイン
 dayjs.extend(utc)
@@ -62,27 +68,23 @@ dayjs.extend(utc)
 @Component({
   components: {
     Modal,
-    Cog,
+    Trash,
     Plus,
     Buffer,
   },
 })
-export default class Project extends Vue {
-  project_name = ''
-  project_period = ''
-  projects: string[] = []
+export default class Project extends Mixins(Firestore) {
+  // モーダル
   modal = false
-  // datepicker: flatpickr.Instance | flatpickr.Instance[] | string = '';
-
-  public getProjects() {
-    axios.get('/projects').then((response) => {
-      this.projects = response.data.documents
-      console.log(response.data.documents)
-    })
+  private openModal() {
+    this.modal = true
+  }
+  private closeModal() {
+    this.modal = false
   }
 
   public created() {
-    this.getProjects()
+    this.watchProjects()
   }
 
   public mounted() {
@@ -98,63 +100,11 @@ export default class Project extends Vue {
     const fp = document.querySelectorAll('.flatpickr-calendar')
     document.body.removeChild(fp[0])
   }
-
-  private openModal() {
-    this.modal = true
-  }
-
-  private closeModal() {
-    this.modal = false
-  }
-
-  private addProject() {
-    const projectPeriod = this.project_period.split(' ')
-    const period = dayjs(projectPeriod[2]).diff(projectPeriod[0], 'd')
-    axios
-      .post('/projects', {
-        fields: {
-          // Firebase Cloud Firestore 固有のdata指定方法
-          project: {
-            stringValue: this.project_name,
-          },
-          id: {
-            integerValue: 5,
-          },
-          start: {
-            stringValue: projectPeriod[0],
-          },
-          end: {
-            stringValue: projectPeriod[2],
-          },
-          period: {
-            integerValue: period + 1,
-          },
-        },
-      })
-      .then((response) => {
-        // post成功した場合
-        this.getProjects()
-        this.closeModal()
-        console.log(response)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
-
-  private removeProject(index: number): void {
-    this.projects.splice(index, 1)
-  }
-
-  @Prop()
-  public greet?: string
 }
 </script>
 
 <style lang="scss">
 .project {
-  color: $thinColor;
-
   &_head {
     display: flex;
     align-items: center;
@@ -167,6 +117,7 @@ export default class Project extends Vue {
     align-items: center;
     font-weight: 600;
     font-size: 1.6rem;
+    color: $thinColor;
     svg {
       display: block;
       margin-right: 10px;
@@ -184,7 +135,6 @@ export default class Project extends Vue {
       width: 20px;
       height: 20px;
       border-radius: 20px;
-      margin-right: 5px;
       background-color: darken($deepColor, 5%);
       cursor: pointer;
       svg {
@@ -199,15 +149,14 @@ export default class Project extends Vue {
   }
 
   &_table {
-    position: relative;
     width: 100%;
     margin-top: 10px;
-    border-collapse: collapse;
-    border-spacing: 0;
-    &_icon {
-      padding: 15px 30px 0 0;
-      text-align: center;
-      > svg {
+    padding: 0 30px;
+    tr {
+      height: 30px;
+      color: $subColor;
+      line-height: 1.4;
+      svg {
         width: 12px;
         height: auto;
         fill: $subColor;
@@ -216,10 +165,6 @@ export default class Project extends Vue {
           fill: $thinColor;
         }
       }
-    }
-    &_name {
-      text-align: left;
-      padding: 15px 0 0 30px;
     }
   }
 }
@@ -270,7 +215,6 @@ export default class Project extends Vue {
   }
 }
 
-// start - デートピッカー
 .flatpickr-calendar {
   background: $deepColor;
 }
@@ -299,5 +243,4 @@ export default class Project extends Vue {
 .flatpickr-months .flatpickr-next-month:hover svg {
   fill: $mainColor;
 }
-// end - デートピッカー
 </style>

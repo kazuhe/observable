@@ -54,6 +54,7 @@ li {
 .container {
   display: flex;
   height: 100vh;
+  min-width: 768px;
 }
 
 // unit Compornets

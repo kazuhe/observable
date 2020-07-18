@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="sidebar_unit">
-      <Project greet="Hello!" />
+      <Project />
     </div>
   </div>
 </template>

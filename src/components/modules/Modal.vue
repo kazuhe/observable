@@ -32,8 +32,8 @@ export default class Modal extends Vue {}
 }
 .modal_inner {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: -50px;
+  right: -80px;
   background: #fff;
   width: 300px;
   box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3),
